@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/app_user.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/text_field.dart';
-import 'devices_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -40,11 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Регистрация прошла успешно')),
       );
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => const DevicesPage()),
-        (route) => false,
-      );
+      Navigator.pop(context);
     }
   }
 

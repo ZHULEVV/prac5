@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/app_user.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/text_field.dart';
-import 'devices_page.dart';
-import 'register_page.dart';
+import '../routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -56,10 +55,7 @@ class _LoginPageState extends State<LoginPage> {
       messenger.showSnackBar(
         const SnackBar(content: Text('Вход выполнен')),
       );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const DevicesPage()),
-      );
+      Navigator.pushReplacementNamed(context, Routes.home);
     }
   }
 
@@ -137,14 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Text('Нет аккаунта? '),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterPage(),
-                        ),
-                      );
-                    },
+                    onTap: () => Navigator.pushNamed(context, Routes.register),
                     child: const Text(
                       'Зарегистрируйтесь',
                       style: TextStyle(fontWeight: FontWeight.bold),

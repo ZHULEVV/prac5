@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/app_user.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/text_field.dart';
-import 'login_page.dart';
+import '../routes.dart';
+import '../widgets/app_nav_bar.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -49,19 +50,13 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const CircleAvatar(
-            radius: 14,
-            backgroundColor: Colors.black,
-            child: Icon(Icons.chevron_left, color: Colors.white, size: 22),
-          ),
-        ),
+        automaticallyImplyLeading: false,
         title: const Text(
           'Профиль',
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
       ),
+      bottomNavigationBar: const AppNavBar(selectedIndex: 1),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Form(
@@ -124,10 +119,10 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 8),
               TextButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.pushNamedAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (_) => const LoginPage()),
-                    (route) => false,
+                    Routes.login,
+                    (_) => false,
                   );
                 },
                 child: const Text(

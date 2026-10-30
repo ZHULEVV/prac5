@@ -1,21 +1,11 @@
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform;
 import 'package:flutter/material.dart';
+import '../models/device_item.dart';
+import '../routes.dart';
+import '../widgets/app_nav_bar.dart';
 
-import 'profile_page.dart';
-
-class DeviceItem {
-  final String title;
-  final String description;
-  final IconData icon;
-
-  const DeviceItem({
-    required this.title,
-    required this.description,
-    required this.icon,
-  });
-}
-
-class DevicesPage extends StatelessWidget {
-  const DevicesPage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   static const List<String> _images = [
     'assets/images/devices.jpg',
@@ -29,59 +19,74 @@ class DevicesPage extends StatelessWidget {
     DeviceItem(
       title: 'Смартфон',
       description: 'Карманное устройство для звонков, интернета и приложений',
+      image: 'assets/images/smartphone.jpg',
       icon: Icons.smartphone,
     ),
     DeviceItem(
       title: 'Ноутбук',
       description: 'Портативный компьютер для работы и учёбы',
+      image: 'assets/images/laptop.jpeg',
       icon: Icons.laptop,
     ),
     DeviceItem(
       title: 'Планшет',
       description: 'Сенсорное устройство для чтения, видео и рисования',
+      image: 'assets/images/tablet.jpeg',
       icon: Icons.tablet_mac,
     ),
     DeviceItem(
       title: 'Умные часы',
       description: 'Носимое устройство с уведомлениями и датчиками здоровья',
+      image: 'assets/images/smartwatch.jpg',
       icon: Icons.watch,
     ),
   ];
 
-  void _showDeviceSnackBar(BuildContext context, String title) {
-    final messenger = ScaffoldMessenger.of(context);
-    messenger.hideCurrentSnackBar();
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text('Вы выбрали: $title'),
-        duration: const Duration(seconds: 2),
+  Widget _buildCard(BuildContext context, DeviceItem device) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(color: Colors.grey),
+      ),
+      child: ListTile(
+        leading: Icon(device.icon, color: Colors.blueGrey),
+        title: Text(device.title),
+        subtitle: Text(device.description),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 16,
+          color: Colors.grey,
+        ),
+        onTap: () => Navigator.pushNamed(
+          context,
+          Routes.detail,
+          arguments: device,
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final double platformPadding =
+        (kIsWeb ||
+            defaultTargetPlatform == TargetPlatform.windows ||
+            defaultTargetPlatform == TargetPlatform.macOS ||
+            defaultTargetPlatform == TargetPlatform.linux)
+        ? 50
+        : 20;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Электронные устройства',
-          style: TextStyle(fontFamily: 'Pacifico', fontSize: 22),
+          style: TextStyle(fontFamily: 'Pacifico', fontSize: 24),
         ),
         centerTitle: true,
         backgroundColor: Colors.lightGreen,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle_outlined),
-            tooltip: 'Профиль',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ProfilePage()),
-              );
-            },
-          ),
-        ],
       ),
+      bottomNavigationBar: const AppNavBar(selectedIndex: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -99,8 +104,7 @@ class DevicesPage extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 16),
-
+            SizedBox(height: platformPadding),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -115,8 +119,7 @@ class DevicesPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            const SizedBox(height: 16),
-
+            SizedBox(height: platformPadding),
             SizedBox(
               height: 160,
               child: ListView.separated(
@@ -131,37 +134,30 @@ class DevicesPage extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 16),
-
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _devices.length,
-              itemBuilder: (context, index) {
-                final device = _devices[index];
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide(color: Colors.grey),
-                  ),
-                  child: ListTile(
-                    leading: Icon(device.icon, color: Colors.blueGrey),
-                    title: Text(device.title),
-                    subtitle: Text(device.description),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Colors.grey,
-                    ),
-                    onTap: () => _showDeviceSnackBar(context, device.title),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 8),
-            const Divider(),
-            const SizedBox(height: 8),
-
+            SizedBox(height: platformPadding),
+            if (width > 600)
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _devices.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  mainAxisExtent: 96,
+                ),
+                itemBuilder: (context, index) =>
+                    _buildCard(context, _devices[index]),
+              )
+            else
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _devices.length,
+                itemBuilder: (context, index) =>
+                    _buildCard(context, _devices[index]),
+              ),
+            SizedBox(height: platformPadding),
             Row(
               children: [
                 Container(
