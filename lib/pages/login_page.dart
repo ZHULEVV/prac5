@@ -52,9 +52,7 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
-      messenger.showSnackBar(
-        const SnackBar(content: Text('Вход выполнен')),
-      );
+      messenger.showSnackBar(const SnackBar(content: Text('Вход выполнен')));
       Navigator.pushReplacementNamed(context, Routes.home);
     }
   }

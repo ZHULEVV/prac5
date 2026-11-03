@@ -115,8 +115,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 ),
               )
             : null,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         enabledBorder: _border(Colors.black, 1.5),
         focusedBorder: _border(Colors.black, 2.5),
         errorBorder: _border(Colors.red, 1.5),

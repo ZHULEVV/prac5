@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/device_item.dart';
 import '../widgets/app_nav_bar.dart';
 
@@ -31,10 +32,7 @@ class DetailPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            Text(
-              device.description,
-              style: const TextStyle(fontSize: 20),
-            ),
+            Text(device.description, style: const TextStyle(fontSize: 20)),
           ],
         ),
       ),

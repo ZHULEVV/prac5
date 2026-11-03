@@ -36,9 +36,9 @@ class _ProfilePageState extends State<ProfilePage> {
       AppUser.email = _emailController.text.trim();
       AppUser.password = _passwordController.text;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Данные профиля сохранены')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Данные профиля сохранены')));
     }
   }
 
@@ -73,10 +73,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Colors.grey.shade300,
                       borderRadius: BorderRadius.circular(24),
                     ),
-                    child: const Icon(Icons.person, size: 64, color: Colors.grey),
+                    child: const Icon(
+                      Icons.person,
+                      size: 64,
+                      color: Colors.grey,
+                    ),
                   ),
-                  const Icon(Icons.photo_camera_outlined,
-                      size: 32, color: Colors.black54),
+                  const Icon(
+                    Icons.photo_camera_outlined,
+                    size: 32,
+                    color: Colors.black54,
+                  ),
                 ],
               ),
               const SizedBox(height: 24),
